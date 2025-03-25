@@ -19,6 +19,8 @@ nltk.download('punkt_tab')  # Fixes your error
 
 app = Flask(__name__)
 
+CSV_PATH = "updated_file_kaggle_no_duplicates.csv"
+
 def preprocess_text(text):
     """Preprocess text: lowercase, remove punctuation, remove stopwords."""
     text = text.lower()
