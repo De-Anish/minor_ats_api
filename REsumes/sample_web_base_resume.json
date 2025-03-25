@@ -1,0 +1,136 @@
+
+
+
+{
+    "name": "Progya Bhattacharjee",
+    "contact": {
+        "phone": "+91 7602067515",
+        "email": "progy1112@gmail.com",
+        "linkedin": "https://www.linkedin.com/in/progya-bhattacharjee-427149298",
+        "github": "https://github.com/ProgyaBhattachrjee?tab=repositories"
+    },
+    "education": {
+        "university": "KIIT University Bhubaneswar, Odisha",
+        "degree": "B.Tech in Computer Science Engineering",
+        "cgpa": 9.16,
+        "years": "2022 \u2013 2026"
+    },
+    "experience": [
+        {
+            "role": "Web Developer",
+            "organization": "CyberPeace Corps: KIIT Chapter",
+            "location": "Bhubaneswar, Odisha",
+            "start_date": "June 2024",
+            "responsibilities": [
+                "Working on various web development projects to enhance digital literacy and cybersecurity awareness."
+            ]
+        },
+        {
+            "role": "UI/UX Designer",
+            "organization": "USC.KIIT",
+            "location": "Bhubaneswar, Odisha",
+            "start_date": "June 2024",
+            "responsibilities": [
+                "Designing intuitive user interfaces and enhancing user experiences for university projects."
+            ]
+        },
+        {
+            "role": "Content Writer",
+            "organization": "Kamakshi & HeForShe",
+            "location": "Bhubaneswar, Odisha",
+            "start_date": "September 2023",
+            "responsibilities": [
+                "Creating engaging content focused on women-related social issues."
+            ]
+        },
+        {
+            "role": "Web Developer",
+            "organization": "AWS Cloud Club KIIT",
+            "location": "Bhubaneswar, Odisha",
+            "start_date": "August 2024",
+            "responsibilities": [
+                "Working on various web development projects to enhance user experience and functionality."
+            ]
+        }
+    ],
+    "projects": [
+        {
+            "name": "HomeStore",
+            "technology": "React.js",
+            "year": 2024,
+            "description": [
+                "Developed a home d\u00e9cor shopping app that simplifies and streamlines the shopping process.",
+                "Designed a user-friendly platform for browsing collections and making purchases."
+            ]
+        },
+        {
+            "name": "Dailyo",
+            "technology": "React.js",
+            "year": 2024,
+            "description": [
+                "Created a diary app that empowers users with a convenient platform for self-reflection.",
+                "Encourages daily journaling for personal growth and well-being."
+            ]
+        },
+        {
+            "name": "Portfolio Website",
+            "technology": "Next.js",
+            "year": 2024,
+            "description": [
+                "Developed a portfolio website to showcase my projects and skills."
+            ]
+        }
+    ],
+    "technical_skills": {
+        "languages": [
+            "Java",
+            "JavaScript",
+            "C",
+            "Python",
+            "SQL",
+            "Dart"
+        ],
+        "back_end": [
+            "Express.js",
+            "Node.js",
+            "MongoDB"
+        ],
+        "front_end": [
+            "React.js",
+            "HTML5",
+            "CSS",
+            "Tailwind CSS",
+            "Bootstrap",
+            "Next.js",
+            "TypeScript"
+        ],
+        "soft_skills": [
+            "Team Work",
+            "Content Writing",
+            "Communication",
+            "Graphic Design"
+        ],
+        "developer_tools": [
+            "Git",
+            "VS Code",
+            "Visual Studio",
+            "GitHub",
+            "Postman",
+            "Auth0",
+            "Figma",
+            "NumPy",
+            "Pandas"
+        ],
+        "libraries": [
+            "jQuery",
+            "Axios"
+        ],
+        "coursework": [
+            "Data Structures and Algorithms",
+            "Object-Oriented Programming in Java",
+            "Computer Architecture",
+            "Operating Systems",
+            "Database Management System"
+        ]
+    }
+}

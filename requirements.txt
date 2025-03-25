@@ -1,0 +1,8 @@
+Flask
+numpy
+pandas
+scikit-learn
+language-tool-python
+textstat
+nltk
+gunicorn

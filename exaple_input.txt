@@ -1,0 +1,13 @@
+curl -X POST "http://127.0.0.1:5000/evaluate-resume" \
+     -H "Content-Type: application/json" \
+     -d '{
+          "job_description": "Software Engineer with Python, AI, and Data Science skills",
+          "resume_data": {
+              "education": { "degree": "B.Tech in Computer Science", "university": "XYZ University" },
+              "experience": [
+                  { "role": "Data Analyst", "organization": "TechCorp", "responsibilities": ["Analyzed data", "Built dashboards"] }
+              ],
+              "projects": [{ "name": "AI Chatbot", "description": ["Built a chatbot using GPT"] }],
+              "technical_skills": { "Programming": ["Python", "JavaScript"], "Data Science": ["Pandas", "NumPy"] }
+          }
+      }'
