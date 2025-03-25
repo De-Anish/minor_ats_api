@@ -2,12 +2,13 @@ from flask import Flask, request, jsonify
 import json
 import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-import language_tool_python
+import requests
 import textstat
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+import os
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -31,7 +32,7 @@ def compute_cosine_similarity(text1, text2):
     vectorizer = TfidfVectorizer()
     vectors = vectorizer.fit_transform([text1, text2])
     cosine_similarity = np.dot(vectors[0].toarray(), vectors[1].toarray().T)[0][0]
-    return cosine_similarity
+    return cosine_similarity * 10
 
 def extract_text_from_json(resume_data):
     """Extracts text from a JSON resume."""
@@ -62,12 +63,18 @@ def extract_skills_from_json(resume_data):
     return " ".join(skills)
 
 def calculate_grammar_score(text):
-    """Calculates grammar score using LanguageTool."""
-    tool = language_tool_python.LanguageTool('en-US')
-    matches = tool.check(text)
-    num_errors = len(matches)
-    total_words = len(text.split())
-    return max(0.5, 1 - (num_errors / max(1, total_words)))
+    """Calculates grammar score using LanguageTool API (No Java required)."""
+    url = "https://api.languagetool.org/v2/check"
+    params = {"text": text, "language": "en-US"}
+    
+    response = requests.post(url, data=params)
+    if response.status_code == 200:
+        matches = response.json().get("matches", [])
+        num_errors = len(matches)
+        total_words = len(text.split())
+        return max(0.5, 1 - (num_errors / max(1, total_words)))
+    
+    return 0.8  # Default score if API request fails
 
 def calculate_structure_score(resume_data):
     """Calculates structure score based on the presence of key sections."""
@@ -109,19 +116,21 @@ def calculate_vocabulary_score(text):
     return min(1, max(0.5, normalized_score))
 
 def calculate_final_score(keyword_match, section_structure, formatting_compliance, readability_score, grammar_score, structure_score, vocab_score):
-    """Combines all scores using the provided weight distribution."""
+    """Combines all scores using the provided weight distribution and caps it at 98."""
     weights = {
-        "keyword_match": 0.5, "section_structure": 0.15, "formatting_compliance": 0.15,
-        "readability": 0.2, "grammar": 0.15, "structure": 0.15, "vocab": 0.15
+        "keyword_match": 0.3, "section_structure": 0.1, "formatting_compliance": 0.05,
+        "readability": 0.15, "grammar": 0.2, "structure": 0.1, "vocab": 0.1
     }
     
-    return (weights["keyword_match"] * keyword_match +
-            weights["section_structure"] * section_structure +
-            weights["formatting_compliance"] * formatting_compliance +
-            weights["readability"] * readability_score +
-            weights["grammar"] * grammar_score +
-            weights["structure"] * structure_score +
-            weights["vocab"] * vocab_score)
+    final_score = (weights["keyword_match"] * keyword_match +
+                   weights["section_structure"] * section_structure +
+                   weights["formatting_compliance"] * formatting_compliance +
+                   weights["readability"] * readability_score +
+                   weights["grammar"] * grammar_score +
+                   weights["structure"] * structure_score +
+                   weights["vocab"] * vocab_score)
+    
+    return min(final_score, 98)
 
 def process_resume(resume_data, job_description):
     """Processes a resume and calculates its final ATS score."""
@@ -147,7 +156,7 @@ def process_resume(resume_data, job_description):
         "Grammar Score": grammar_score,
         "Structure Score": structure_score,
         "Vocabulary Score": vocab_score,
-        "Final Score": (final_score+0.2)
+        "Final Score": final_score
     }
 
 @app.route('/evaluate-resume', methods=['POST'])
@@ -165,4 +174,5 @@ def evaluate_resume():
     return jsonify(result)
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
