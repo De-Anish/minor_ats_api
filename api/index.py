@@ -147,7 +147,7 @@ def process_resume(resume_data, job_description):
         "Grammar Score": grammar_score,
         "Structure Score": structure_score,
         "Vocabulary Score": vocab_score,
-        "Final Score": final_score
+        "Final Score": (final_score+0.2)
     }
 
 @app.route('/evaluate-resume', methods=['POST'])
@@ -165,4 +165,4 @@ def evaluate_resume():
     return jsonify(result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
