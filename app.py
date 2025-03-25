@@ -12,6 +12,10 @@ import os
 
 nltk.download('punkt')
 nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('omw-1.4')  # Required for lemmatization
+nltk.download('punkt_tab')  # Fixes your error
 
 app = Flask(__name__)
 
