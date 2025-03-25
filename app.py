@@ -16,8 +16,8 @@ nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
 nltk.download('omw-1.4')  # Required for lemmatization
 nltk.download('punkt_tab')  # Fixes your error
-
 app = Flask(__name__)
+CSV_PATH = "updated_file_kaggle_no_duplicates.csv"
 
 CSV_PATH = "updated_file_kaggle_no_duplicates.csv"
 
