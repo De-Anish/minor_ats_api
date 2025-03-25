@@ -158,7 +158,7 @@ def process_resume(resume_data, job_description):
         "Formatting Compliance": formatting_compliance,
         "Readability Score": readability_score,
         "Grammar Score": grammar_score,
-        "Structure Score": structure_score,
+        "Loda Score": structure_score,
         "Vocabulary Score": vocab_score,
         "Final Score": final_score
     }
