@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import json
 import numpy as np
+import pandas as pd
 import requests
 import textstat
 import nltk
@@ -15,11 +17,13 @@ nltk.download('stopwords')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
+nltk.download('punkt_tab')
 
 # Initialize Flask app and enable CORS
 app = Flask(__name__)
 CORS(app)  # Allows all origins
 
+# Path to CSV file
 CSV_PATH = "updated_file_kaggle_no_duplicates.csv"
 
 def preprocess_text(text):
@@ -156,7 +160,7 @@ def process_resume(resume_data, job_description):
         "Formatting Compliance": formatting_compliance,
         "Readability Score": readability_score,
         "Grammar Score": grammar_score,
-        "Loda Score": structure_score,
+        "Structure Score": structure_score,
         "Vocabulary Score": vocab_score,
         "Final Score": final_score
     }
@@ -177,6 +181,5 @@ def evaluate_resume():
     return jsonify(result)
 
 if __name__ == "__main__":
-    print("Starting Flask server... 🚀")  # Debug message
     from waitress import serve
     serve(app, host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))

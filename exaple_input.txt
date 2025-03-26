@@ -1,4 +1,4 @@
-curl -X POST "http://127.0.0.1:5001/evaluate-resume" \
+curl -X POST "http://127.0.0.1:10000/evaluate-resume" \
      -H "Content-Type: application/json" \
      -d '{
           "job_description": "Software Engineer with Python, AI, and Data Science skills",
