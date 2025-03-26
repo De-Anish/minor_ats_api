@@ -155,13 +155,13 @@ def process_resume(resume_data, job_description):
     final_score = calculate_final_score(keyword_match, section_structure, formatting_compliance, readability_score, grammar_score, structure_score, vocab_score)
 
     return {
-        "Keyword Match": keyword_match,
-        "Section Structure": section_structure,
-        "Formatting Compliance": formatting_compliance,
-        "Readability Score": readability_score,
-        "Grammar Score": grammar_score,
-        "Structure Score": structure_score,
-        "Vocabulary Score": vocab_score,
+        "Keyword Match": min(keyword_match,1)
+        "Section Structure": min(section_structure,1)
+        "Formatting Compliance": min(formatting_compliance,1)
+        "Readability Score": min(readability_score,1)
+        "Grammar Score": min(grammar_score,1)
+        "Structure Score": min(structure_score,1)
+        "Vocabulary Score": min(vocab_score,1)
         "Final Score": final_score
     }
 
