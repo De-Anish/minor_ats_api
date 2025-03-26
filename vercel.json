@@ -1,0 +1,10 @@
+{
+    "functions": {
+      "api/evaluate.py": {
+        "runtime": "python3.9"
+      }
+    },
+    "routes": [
+      { "src": "/evaluate-resume", "dest": "/api/evaluate.py" }
+    ]
+  }

@@ -1,9 +1,9 @@
-Flask
+flask
+flask-cors
 numpy
 pandas
 requests
+scikit-learn
 textstat
 nltk
-scikit-learn
-gunicorn
-flask-cors
+waitress
