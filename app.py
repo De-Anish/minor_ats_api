@@ -159,7 +159,7 @@ def process_resume(resume_data, job_description):
 
     return {
         "Keyword Match": min(keyword_match, 1),
-        "Section Structure": min(section_structure, 1),
+        "Section Content Availability": min(section_structure, 1),
         "Formatting Compliance": min(formatting_compliance, 1),
         "Readability Score": min(readability_score, 1),
         "Grammar Score": min(grammar_score, 1),
