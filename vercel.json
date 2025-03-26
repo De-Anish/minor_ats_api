@@ -1,10 +1,15 @@
 {
-    "functions": {
-      "api/evaluate.py": {
-        "runtime": "python3.9"
+    "version": 2,
+    "builds": [
+      {
+        "src": "app.py",
+        "use": "@vercel/python"
       }
-    },
+    ],
     "routes": [
-      { "src": "/evaluate-resume", "dest": "/api/evaluate.py" }
+      {
+        "src": "/evaluate-resume",
+        "dest": "app.py"
+      }
     ]
   }
