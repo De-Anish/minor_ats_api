@@ -6,3 +6,4 @@ textstat
 nltk
 scikit-learn
 gunicorn
+flask-cors
