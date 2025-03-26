@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
-import json
+from flask_cors import CORS
 import numpy as np
-import pandas as pd
 import requests
 import textstat
 import nltk
@@ -10,14 +9,16 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 import os
 
+# Download required NLTK resources
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
-nltk.download('omw-1.4')  # Required for lemmatization
-nltk.download('punkt_tab')  # Fixes your error
+nltk.download('omw-1.4')
+
+# Initialize Flask app and enable CORS
 app = Flask(__name__)
-CSV_PATH = "updated_file_kaggle_no_duplicates.csv"
+CORS(app)  # Allows all origins
 
 CSV_PATH = "updated_file_kaggle_no_duplicates.csv"
 
@@ -31,7 +32,7 @@ def preprocess_text(text):
     return " ".join(words)
 
 def compute_cosine_similarity(text1, text2):
-    """Computes cosine similarity between two texts without preprocessing."""
+    """Compute cosine similarity between two texts."""
     if not text1 or not text2:
         return 0.0
 
@@ -41,7 +42,7 @@ def compute_cosine_similarity(text1, text2):
     return cosine_similarity * 10
 
 def extract_text_from_json(resume_data):
-    """Extracts text from a JSON resume."""
+    """Extract relevant text from a JSON resume."""
     sections = []
     education = resume_data.get("education", {})
     sections.append(education.get("degree", ""))
@@ -59,7 +60,7 @@ def extract_text_from_json(resume_data):
     return " ".join(filter(None, sections))
 
 def extract_skills_from_json(resume_data):
-    """Extracts skills from a structured JSON resume."""
+    """Extract skills from resume JSON."""
     skills = []
     technical_skills = resume_data.get("technical_skills", {})
     for skill_list in technical_skills.values():
@@ -69,45 +70,40 @@ def extract_skills_from_json(resume_data):
     return " ".join(skills)
 
 def calculate_grammar_score(text):
-    """Calculates grammar score using LanguageTool API (No Java required)."""
+    """Calculate grammar score using LanguageTool API."""
     url = "https://api.languagetool.org/v2/check"
     params = {"text": text, "language": "en-US"}
-    
     response = requests.post(url, data=params)
+
     if response.status_code == 200:
         matches = response.json().get("matches", [])
         num_errors = len(matches)
         total_words = len(text.split())
         return max(0.5, 1 - (num_errors / max(1, total_words)))
-    
+
     return 0.8  # Default score if API request fails
 
 def calculate_structure_score(resume_data):
-    """Calculates structure score based on the presence of key sections."""
+    """Calculate structure score based on presence of key sections."""
     score = 0
     total_weight = 5
 
-    if resume_data.get("education"): 
-        score += 1
-    if resume_data.get("experience"): 
-        score += 1
-    if resume_data.get("projects"): 
-        score += 1
-    if resume_data.get("technical_skills"): 
-        score += 1
-    if resume_data.get("certifications"):  
-        score += 1  
+    if resume_data.get("education"): score += 1
+    if resume_data.get("experience"): score += 1
+    if resume_data.get("projects"): score += 1
+    if resume_data.get("technical_skills"): score += 1
+    if resume_data.get("certifications"): score += 1  
 
     return score / total_weight
 
 def calculate_readability_score(text):
-    """Calculates and normalizes readability score using Flesch Reading Ease."""
+    """Calculate readability score using Flesch Reading Ease."""
     raw_readability = textstat.flesch_reading_ease(text)
     scaled_score = (raw_readability + 100) / 150
     return max(0.3, min(1, scaled_score))
 
 def calculate_vocabulary_score(text):
-    """Calculates vocabulary richness using a refined type-token ratio."""
+    """Calculate vocabulary richness."""
     words = word_tokenize(text.lower())
     words = [word for word in words if word.isalnum()]
     stop_words = set(stopwords.words('english'))
@@ -122,7 +118,7 @@ def calculate_vocabulary_score(text):
     return min(1, max(0.5, normalized_score))
 
 def calculate_final_score(keyword_match, section_structure, formatting_compliance, readability_score, grammar_score, structure_score, vocab_score):
-    """Combines all scores using the provided weight distribution and caps it at 98."""
+    """Calculate the final ATS score."""
     weights = {
         "keyword_match": 0.3, "section_structure": 0.1, "formatting_compliance": 0.05,
         "readability": 0.15, "grammar": 0.2, "structure": 0.1, "vocab": 0.1
@@ -139,7 +135,7 @@ def calculate_final_score(keyword_match, section_structure, formatting_complianc
     return min(final_score, 98)
 
 def process_resume(resume_data, job_description):
-    """Processes a resume and calculates its final ATS score."""
+    """Process resume and calculate the final ATS score."""
     text = extract_text_from_json(resume_data)
     skills = extract_skills_from_json(resume_data)
 
@@ -167,6 +163,7 @@ def process_resume(resume_data, job_description):
 
 @app.route('/evaluate-resume', methods=['POST'])
 def evaluate_resume():
+    """Evaluate resume endpoint."""
     data = request.json
     
     job_description = data.get('job_description')
@@ -180,5 +177,6 @@ def evaluate_resume():
     return jsonify(result)
 
 if __name__ == "__main__":
+    print("Starting Flask server... 🚀")  # Debug message
     from waitress import serve
     serve(app, host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
