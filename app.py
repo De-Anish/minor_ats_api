@@ -165,7 +165,7 @@ def process_resume(resume_data, job_description):
         "Grammar Score": min(grammar_score, 1),
         "Structure Score": min(structure_score, 1),
         "Vocabulary Score": min(vocab_score, 1),
-        "Final Score": min(final_score, 0.8) 
+        "Final Score": min(final_score, 0.98) 
     }
 
 @app.route('/evaluate-resume', methods=['POST'])
